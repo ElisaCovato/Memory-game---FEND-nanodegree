@@ -2,6 +2,31 @@
  * Create a list that holds all of your cards
  */
 
+// Symbols on the cards
+const cardSymbols = {
+    ANCHOR : 'fa fa-anchor',
+    BICYCLE : 'fa fa-bicycle',
+    BOLT : 'fa fa-bolt',
+    BOMB : 'fa fa-bomb',
+    CUBE : 'fa fa-cube',
+    DIAMOND : 'fa fa-diamond',
+    LEAF : 'fa fa-leaf',
+    PLANE : 'fa fa-paper-plane-o',    
+}
+
+// Card states
+const cardState = {
+    CLOSED : 'card',
+    OPENED : 'card open show',
+    MATCHED : 'card open match',
+}
+
+// Deck of cards
+const cardDeck = {
+	cards : [cardSymbols.ANCHOR, cardSymbols.ANCHOR, cardSymbols.BICYCLE, cardSymbols.BICYCLE, cardSymbols.BOLT, cardSymbols.BOLT, cardSymbols.BOMB, cardSymbols.BOMB, cardSymbols.CUBE, cardSymbols.CUBE, cardSymbols.DIAMOND, cardSymbols.DIAMOND, cardSymbols.LEAF, cardSymbols.LEAF, cardSymbols.PLANE, cardSymbols.PLANE],
+	opened : [],
+	mathced : [],
+}
 
 /*
  * Display the cards on the page
@@ -24,6 +49,7 @@ function shuffle(array) {
 
     return array;
 }
+
 
 
 /*
