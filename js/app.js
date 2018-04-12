@@ -27,7 +27,7 @@ const cardState = {
 const cardDeck = {
 	cards : [cardSymbols.ANCHOR, cardSymbols.ANCHOR, cardSymbols.BICYCLE, cardSymbols.BICYCLE, cardSymbols.BOLT, cardSymbols.BOLT, cardSymbols.BOMB, cardSymbols.BOMB, cardSymbols.CUBE, cardSymbols.CUBE, cardSymbols.DIAMOND, cardSymbols.DIAMOND, cardSymbols.LEAF, cardSymbols.LEAF, cardSymbols.PLANE, cardSymbols.PLANE],
 	opened : [],
-	mathced : [],
+    matched : 0,
 }
 
 /*
@@ -56,7 +56,7 @@ deck = document.querySelector(".deck");
 
 function createHTML(cardClass) {
     (deckSymb = document.createElement("i")).className = cardClass;
-    (deckCard = document.createElement("li")).className = "card";
+    (deckCard = document.createElement("li")).className = cardState.CLOSED;
 
     deckCard.appendChild(deckSymb)
     deck.appendChild(deckCard);    
@@ -83,34 +83,45 @@ deck.addEventListener('click', function(event) {
     if (event.target.matches(".card")) {
         flip(event.target);
         storeOpen(event.target);
+        matchCards(event.target);
     }
 });
 
 function flip(card) {
-    card.classList.add("open","show");
+    card.className = cardState.OPENED;
 } 
 
 function storeOpen(card) {
-    cardDeck.opened.push(card.children[0].className);
-};
+    cardDeck.opened.push(card);
+}
+
+function matchCards(card) {
+    if (cardDeck.opened.length > 1) {
+        cardClass = card.children[0].className;
+
+        var cardOpen = cardDeck.opened[cardDeck.opened.length-2];
+        cardClassOpen = cardOpen.children[0].className;
+
+        if (cardClass === cardClassOpen) {
+          lockMatch(card, cardOpen);
+          cardDeck.matched++; 
+        } else {
+            hideCards(card, cardOpen);
+        }
+        cardDeck.opened = [];
+    }
+}
+
+// If the cards match, it keeps the card open, increase the pairs counter and remove them from the open list
+function lockMatch(card1, card2) {
+    card1.className = cardState.MATCHED;
+    card2.className = cardState.MATCHED;
 
 
-/*// Select all the cards in the deck
-cards = document.querySelectorAll(".card");
+}
 
-// Show/flip a card when clicked
-function flip(card) {
-    card.addEventListener('click', function(event) {
-        event.target.classList.add("open", "show");
-    });
-} 
-cards.forEach(flip);*/
-
-// cards.forEach( function(card) {
-//     card.addEventListener('click', function(event) {
-//         event.target.classList.add("open", "show");
-//     });
-// });
-
-
-
+// If the cards do NOT match, it hides the cards and remove them from the open list
+function hideCards(card1, card2) {
+    card1.className = cardState.CLOSED;
+    card2.className = cardState.CLOSED;
+}
