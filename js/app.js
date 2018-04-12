@@ -1,6 +1,8 @@
 /*
- * Cards types
+ * Deck of cards
  */
+
+
 
 // Symbols on the cards
 const cardSymbols = {
@@ -29,10 +31,7 @@ const cardDeck = {
 }
 
 /*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
+ * Display the cards on the page after shuffling them
  */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -52,13 +51,15 @@ function shuffle(array) {
 
 let shuffleCards = shuffle(cardDeck.cards);
 
+
+deck = document.querySelector(".deck");
+
 function createHTML(cardClass) {
     (deckSymb = document.createElement("i")).className = cardClass;
     (deckCard = document.createElement("li")).className = "card";
 
     deckCard.appendChild(deckSymb)
-    document.querySelector(".deck").appendChild(deckCard);
-    
+    deck.appendChild(deckCard);    
 }
 
 shuffleCards.map(createHTML);
@@ -73,3 +74,36 @@ shuffleCards.map(createHTML);
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+/*
+Event listener for a card
+*/
+
+deck.addEventListener('click', function() {
+    flip();
+});
+
+function flip(card) {
+        event.target.classList.add("open","show");
+} 
+
+
+/*// Select all the cards in the deck
+cards = document.querySelectorAll(".card");
+
+// Show/flip a card when clicked
+function flip(card) {
+    card.addEventListener('click', function(event) {
+        event.target.classList.add("open", "show");
+    });
+} 
+cards.forEach(flip);*/
+
+// cards.forEach( function(card) {
+//     card.addEventListener('click', function(event) {
+//         event.target.classList.add("open", "show");
+//     });
+// });
+
+
+
