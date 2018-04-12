@@ -1,5 +1,5 @@
 /*
- * Create a list that holds all of your cards
+ * Cards types
  */
 
 // Symbols on the cards
@@ -50,7 +50,18 @@ function shuffle(array) {
     return array;
 }
 
+let shuffleCards = shuffle(cardDeck.cards);
 
+function createHTML(cardClass) {
+    (deckSymb = document.createElement("i")).className = cardClass;
+    (deckCard = document.createElement("li")).className = "card";
+
+    deckCard.appendChild(deckSymb)
+    document.querySelector(".deck").appendChild(deckCard);
+    
+}
+
+shuffleCards.map(createHTML);
 
 /*
  * set up the event listener for a card. If a card is clicked:
