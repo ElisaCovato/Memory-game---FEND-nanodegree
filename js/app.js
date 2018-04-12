@@ -79,13 +79,20 @@ shuffleCards.map(createHTML);
 Event listener for a card
 */
 
-deck.addEventListener('click', function() {
-    flip();
+deck.addEventListener('click', function(event) {
+    if (event.target.matches(".card")) {
+        flip(event.target);
+        storeOpen(event.target);
+    }
 });
 
 function flip(card) {
-        event.target.classList.add("open","show");
+    card.classList.add("open","show");
 } 
+
+function storeOpen(card) {
+    cardDeck.opened.push(card.children[0].className);
+};
 
 
 /*// Select all the cards in the deck
