@@ -1,4 +1,15 @@
 /*
+Useful variables
+*/
+
+const deck = document.querySelector(".deck");
+const moves = document.querySelector(".moves");
+const stars = document.querySelector(".stars");
+
+let clicks = 0;
+
+
+/*
  * Deck of cards
  */
 
@@ -52,7 +63,7 @@ function shuffle(array) {
 let shuffleCards = shuffle(cardDeck.cards);
 
 
-deck = document.querySelector(".deck");
+
 
 function createHTML(cardClass) {
     (deckSymb = document.createElement("i")).className = cardClass;
@@ -64,16 +75,6 @@ function createHTML(cardClass) {
 
 shuffleCards.map(createHTML);
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
 
 /*
 Event listener for a card
@@ -97,7 +98,7 @@ function storeOpen(card) {
     cardDeck.opened.push(card);
 }
 
-// This function check if 2 cards match
+// This function check if 2 cards match. If they do it locks them opened, otherwise hide them. It then increase the moves counter and change the star rating accoridngly
 function matchCards(card) {
     if (cardDeck.opened.length > 1) {
         cardClass = card.children[0].className;
@@ -114,6 +115,9 @@ function matchCards(card) {
             }, 800);
         }
         cardDeck.opened = [];
+
+        clicksCounter();
+        rating();
     }
 }
 
@@ -128,3 +132,23 @@ function hideCards(card1, card2) {
     card1.className = cardState.CLOSED;
     card2.className = cardState.CLOSED;
 }
+
+// This function increments the move counter
+function clicksCounter(){
+    clicks +=  1;
+    moves.innerHTML = clicks;
+}
+
+
+
+
+/*
+ * set up the event listener for a card. If a card is clicked:
+ *  - display the card's symbol (put this functionality in another function that you call from this one)
+ *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+ *  - if the list already has another card, check to see if the two cards match
+ *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
+ *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
+ *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
+ *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+ */
