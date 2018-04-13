@@ -80,21 +80,24 @@ Event listener for a card
 */
 
 deck.addEventListener('click', function(event) {
-    if (event.target.matches(".card")) {
+    if (event.target.matches(".card") && !event.target.matches(".match")) {
         flip(event.target);
         storeOpen(event.target);
         matchCards(event.target);
     }
 });
 
+// Flip the cards when it's clicked
 function flip(card) {
     card.className = cardState.OPENED;
 } 
 
+// Store the flipped cards in an array
 function storeOpen(card) {
     cardDeck.opened.push(card);
 }
 
+// This function check if 2 cards match
 function matchCards(card) {
     if (cardDeck.opened.length > 1) {
         cardClass = card.children[0].className;
@@ -106,7 +109,9 @@ function matchCards(card) {
           lockMatch(card, cardOpen);
           cardDeck.matched++; 
         } else {
-            hideCards(card, cardOpen);
+            setTimeout (function() {
+                hideCards(card, cardOpen);
+            }, 800);
         }
         cardDeck.opened = [];
     }
@@ -116,8 +121,6 @@ function matchCards(card) {
 function lockMatch(card1, card2) {
     card1.className = cardState.MATCHED;
     card2.className = cardState.MATCHED;
-
-
 }
 
 // If the cards do NOT match, it hides the cards and remove them from the open list
