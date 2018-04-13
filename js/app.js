@@ -139,6 +139,16 @@ function clicksCounter(){
     moves.innerHTML = clicks;
 }
 
+// This function gives the star rating according to the number of moves
+function rating(){
+    if (clicks > 20) {
+        stars.children[2].children[0].classList.replace("fa-star", "fa-star-o");
+    } else if (clicks < 24 && clicks > 16) {
+        stars.children[1].children[0].classList.replace("fa-star", "fa-star-o");
+    } else if (clicks > 24) {
+        stars.children[0].children[0].classList.replace("fa-star", "fa-star-o");
+    }
+}
 
 
 
