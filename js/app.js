@@ -118,6 +118,8 @@ function matchCards(card) {
 
         clicksCounter();
         rating();
+
+
     }
 }
 
@@ -149,7 +151,6 @@ function rating(){
         stars.children[0].children[0].classList.replace("fa-star", "fa-star-o");
     }
 }
-
 
 
 /*
