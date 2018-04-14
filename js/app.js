@@ -8,6 +8,7 @@ const stars = document.querySelector(".stars");
 const modal = document.querySelector(".modal");
 const close = document.querySelector(".close");
 const rating = document.querySelector(".rating");
+const restart = document.querySelector(".restart");
 
 let clicks = 0;
 
@@ -67,7 +68,7 @@ let shuffleCards = shuffle(cardDeck.cards);
 
 
 
-
+// Create HTML for the deck of cards (display them)
 function createHTML(cardClass) {
     (deckSymb = document.createElement("i")).className = cardClass;
     (deckCard = document.createElement("li")).className = cardState.CLOSED;
@@ -81,7 +82,18 @@ shuffleCards.map(createHTML);
 
 /*
 Event listener for a card
+ *  (roughly) If a card is clicked:
+ *  - display the card's symbol 
+ *  - add the card to a *list* of "open" cards 
+ *  - if the list already has another card, check to see if the two cards match
+ *    + if the cards do match, lock the cards in the open position 
+ *    + if the cards do not match, remove the cards from the list and hide the card's symbol
+ *    + increment the move counter and display it on the page 
+ *    + if all cards have matched, display a message with the final score 
 */
+
+
+
 
 deck.addEventListener('click', function(event) {
     if (event.target.matches(".card") && !event.target.matches(".match")) {
@@ -177,13 +189,35 @@ function finishGame() {
 } 
 
 
+
 /*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+Restart game
+*/
+
+// Set initial game
+// Initial Game
+function initGame() {
+    // Clear the deck of cards, empty the list of open cards, and reset counter for matched cards
+
+    deck.innerHTML = "";
+
+    cardDeck.opened = [];
+    cardDeck.matched = 0;
+
+    // Shuffle the cards and re-create their HTML
+    let shuffleCards = shuffle(cardDeck.cards);
+    shuffleCards.map(createHTML);
+
+    // Reset counter of moves 
+    let clicks = 0;
+    moves.innerHTML = clicks;
+
+    // Reset score
+    stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
+}
+
+restart.addEventListener('click', function() {
+    initGame();
+})
+
+
