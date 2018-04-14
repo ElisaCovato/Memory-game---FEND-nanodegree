@@ -5,6 +5,9 @@ Useful variables
 const deck = document.querySelector(".deck");
 const moves = document.querySelector(".moves");
 const stars = document.querySelector(".stars");
+const modal = document.querySelector(".modal");
+const close = document.querySelector(".close");
+const rating = document.querySelector(".rating");
 
 let clicks = 0;
 
@@ -102,10 +105,10 @@ function storeOpen(card) {
 function matchCards(card) {
     if (cardDeck.opened.length > 1) {
         cardClass = card.children[0].className;
-
         var cardOpen = cardDeck.opened[cardDeck.opened.length-2];
         cardClassOpen = cardOpen.children[0].className;
 
+        // check if the cards match or not
         if (cardClass === cardClassOpen) {
           lockMatch(card, cardOpen);
           cardDeck.matched++; 
@@ -114,12 +117,16 @@ function matchCards(card) {
                 hideCards(card, cardOpen);
             }, 800);
         }
+        // empty the list of open cards
         cardDeck.opened = [];
-
+        // increase the click counter
         clicksCounter();
-        rating();
-
-
+        // change star rating accorindgly to the numbers of moves
+        ratingStars();
+        // if all the cards are matched shows the finishing-game message
+        if (cardDeck.matched === cardDeck.cards.length/2) {
+            finishGame();
+        }
     }
 }
 
@@ -142,15 +149,32 @@ function clicksCounter(){
 }
 
 // This function gives the star rating according to the number of moves
-function rating(){
-    if (clicks > 20) {
+function ratingStars(){
+    if (clicks > 16) {
         stars.children[2].children[0].classList.replace("fa-star", "fa-star-o");
-    } else if (clicks < 24 && clicks > 16) {
+    } else if (clicks < 20 && clicks > 16) {
         stars.children[1].children[0].classList.replace("fa-star", "fa-star-o");
-    } else if (clicks > 24) {
+    } else if (clicks > 20) {
         stars.children[0].children[0].classList.replace("fa-star", "fa-star-o");
     }
 }
+// This function clones the score and adds it to the modal
+function getScore() {
+    let score = stars.cloneNode(true);
+    rating.append(score);
+}
+
+
+// This function show a popup winning message + score in a modal box when the game finishes
+function finishGame() {
+    //function clone score in the popup message
+    getScore();
+
+    modal.style.display = "block";
+    close.addEventListener('click', function() {
+        modal.style.display = "none";
+    });
+} 
 
 
 /*
