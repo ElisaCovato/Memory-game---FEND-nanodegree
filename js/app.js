@@ -43,6 +43,7 @@ const cardDeck = {
 	cards : [cardSymbols.ANCHOR, cardSymbols.ANCHOR, cardSymbols.BICYCLE, cardSymbols.BICYCLE, cardSymbols.BOLT, cardSymbols.BOLT, cardSymbols.BOMB, cardSymbols.BOMB, cardSymbols.CUBE, cardSymbols.CUBE, cardSymbols.DIAMOND, cardSymbols.DIAMOND, cardSymbols.LEAF, cardSymbols.LEAF, cardSymbols.PLANE, cardSymbols.PLANE],
 	opened : [],
     matched : 0,
+    isAnimating : false,
 }
 
 /*
@@ -96,7 +97,7 @@ Event listener for a card
 
 
 deck.addEventListener('click', function(event) {
-    if (event.target.matches(".card") && !event.target.matches(".match", ".show")) {
+    if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".match", ".show")) {
         flip(event.target);
         storeOpen(event.target);
         matchCards(event.target);
@@ -144,10 +145,12 @@ function matchCards(card) {
 
 // It animates matching cards 
 function animateMatch (card) {
+    cardDeck.isAnimating = true;
     card.className = cardState.MATCHED;
     card.className += " animated infinite rubberBand";
     setTimeout (function() {
         card.classList.remove("animated", "infinite", "rubberBand");
+        cardDeck.isAnimating = false;
     }, 1000);
 }
 
@@ -159,9 +162,11 @@ function lockMatch(card1, card2) {
 
 // It animates the cards when they don't match and they it closes them 
 function animateHide(card) {
+    cardDeck.isAnimating = true;
     card.className += " notmatch animated infinite wobble";
     setTimeout (function() {
        card.className = cardState.CLOSED; 
+       cardDeck.isAnimating = false;
     }, 1000);
 }
 
