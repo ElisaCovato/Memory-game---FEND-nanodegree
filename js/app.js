@@ -96,7 +96,7 @@ Event listener for a card
 
 
 deck.addEventListener('click', function(event) {
-    if (event.target.matches(".card") && !event.target.matches(".match")) {
+    if (event.target.matches(".card") && !event.target.matches(".match", ".show")) {
         flip(event.target);
         storeOpen(event.target);
         matchCards(event.target);
@@ -127,7 +127,7 @@ function matchCards(card) {
         } else {
             setTimeout (function() {
                 hideCards(card, cardOpen);
-            }, 800);
+            }, 320);
         }
         // empty the list of open cards
         cardDeck.opened = [];
@@ -142,10 +142,19 @@ function matchCards(card) {
     }
 }
 
-// If the cards match, it keeps the card open, increase the pairs counter and remove them from the open list
+// It animates matching cards
+function animateMatch (card) {
+    card.className = cardState.MATCHED;
+    card.className += " animated infinite rubberBand";
+    setTimeout (function() {
+        card.classList.remove("animated", "infinite", "rubberBand");
+    }, 1000);
+}
+
+// If the cards match, it keeps the card open and animate them
 function lockMatch(card1, card2) {
-    card1.className = cardState.MATCHED;
-    card2.className = cardState.MATCHED;
+    animateMatch(card1);
+    animateMatch(card2);
 }
 
 // If the cards do NOT match, it hides the cards and remove them from the open list
@@ -213,7 +222,7 @@ function initGame() {
     let clicks = 0;
     moves.innerHTML = clicks;
 
-    // Reset score
+    // Reset score in the game and in the modal
     stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
     rating.innerHTML = "";
 }
