@@ -142,7 +142,7 @@ function matchCards(card) {
     }
 }
 
-// It animates matching cards
+// It animates matching cards 
 function animateMatch (card) {
     card.className = cardState.MATCHED;
     card.className += " animated infinite rubberBand";
@@ -157,10 +157,19 @@ function lockMatch(card1, card2) {
     animateMatch(card2);
 }
 
+// It animates the cards when they don't match and they it closes them 
+function animateHide(card) {
+    card.className += " notmatch animated infinite wobble";
+    setTimeout (function() {
+       card.className = cardState.CLOSED; 
+    }, 1000);
+}
+
+
 // If the cards do NOT match, it hides the cards and remove them from the open list
 function hideCards(card1, card2) {
-    card1.className = cardState.CLOSED;
-    card2.className = cardState.CLOSED;
+    animateHide(card1);
+    animateHide(card2);
 }
 
 // This function increments the move counter
