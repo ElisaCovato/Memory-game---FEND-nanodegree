@@ -170,6 +170,7 @@ function ratingStars(){
         stars.children[0].children[0].classList.replace("fa-star", "fa-star-o");
     }
 }
+
 // This function clones the score and adds it to the modal
 function getScore() {
     let score = stars.cloneNode(true);
@@ -214,6 +215,7 @@ function initGame() {
 
     // Reset score
     stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
+    rating.innerHTML = "";
 }
 
 restart.addEventListener('click', function() {
