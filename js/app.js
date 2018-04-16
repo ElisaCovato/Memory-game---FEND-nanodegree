@@ -11,7 +11,11 @@ const rating = document.querySelector(".rating");
 const restart = document.querySelector(".restart");
 
 
+// Set the value for clicks counter and timer
 let clicks = 0;
+let mTimer = 0;
+let sTimer = 0;
+let timeGoes = true;
 
 /*
  * Deck of cards
