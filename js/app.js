@@ -9,6 +9,7 @@ const modal = document.querySelector(".modal");
 const close = document.querySelector(".close");
 const rating = document.querySelector(".rating");
 const restart = document.querySelector(".restart");
+const timer = document.querySelector(".timer");
 
 
 // Set the value for clicks counter and timer
@@ -16,6 +17,14 @@ let clicks = 0;
 let mTimer = 0;
 let sTimer = 0;
 let timeGoes = true;
+
+
+// Set number of stars accordingly to number of moves
+const stars1 = 24;
+const stars2 = 20;
+const stars3 = 16
+
+
 
 /*
  * Deck of cards
@@ -101,7 +110,7 @@ Event listener for a card
 
 
 deck.addEventListener('click', function(event) {
-    if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".match", ".show")) {
+    if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".open")) {
         flip(event.target);
         storeOpen(event.target);
         matchCards(event.target);
@@ -187,11 +196,16 @@ function clicksCounter(){
     moves.innerHTML = clicks;
 }
 
+// This function keeps track of the time
+function timeTrack() {
+
+}
+
 // This function gives the star rating according to the number of moves
 function ratingStars(){
-    if (clicks > 16 && clicks <= 20) {
+    if (clicks > stars3 && clicks <= stars2) {
         stars.children[2].children[0].classList.replace("fa-star", "fa-star-o");
-    } else if (clicks > 20 && clicks <= 24) {
+    } else if (clicks > stars2 && clicks <= stars1) {
         stars.children[1].children[0].classList.replace("fa-star", "fa-star-o");
     }
 }

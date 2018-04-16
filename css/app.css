@@ -19,6 +19,7 @@ body {
 body {
     background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
+    color: #2e4b85;
 }
 
 .container {
@@ -96,25 +97,29 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    width: 550px;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
+}
+
+.timer {
+    padding: 0;
+    display: inline-block;
+    margin: 0 10px 0 0;
+    border-radius: 5px;
+    width: 80px;
+    text-align: center;
+    color: white;
+    background-color: #7840a5;
 }
 
 .stars {
     margin: 0;
     padding: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
-}
-
-.timer {
-    float: left;
-    margin: 30px;
-    padding: 0;
-    display: inline-block;
-    margin: 0 10px 0 0;
+    margin: 0 5px 0 -60px;
+    color: #7840a5;
 }
 
 .stars li {
@@ -122,10 +127,20 @@ h1 {
     display: inline-block;
 }
 
+.moves {
+    min-width: 2ch;
+    display: inline-block;
+    text-align: right;
+}
+
 .restart {
     float: right;
     cursor: pointer;
 }
+
+
+
+
 
 /*
  * Styles for modal panel - it appears when the game finishs
