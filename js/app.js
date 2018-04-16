@@ -10,8 +10,8 @@ const close = document.querySelector(".close");
 const rating = document.querySelector(".rating");
 const restart = document.querySelector(".restart");
 
-let clicks = 0;
 
+let clicks = 0;
 
 /*
  * Deck of cards
@@ -185,12 +185,10 @@ function clicksCounter(){
 
 // This function gives the star rating according to the number of moves
 function ratingStars(){
-    if (clicks > 16) {
+    if (clicks > 16 && clicks <= 20) {
         stars.children[2].children[0].classList.replace("fa-star", "fa-star-o");
-    } else if (clicks < 20 && clicks > 16) {
+    } else if (clicks > 20 && clicks <= 24) {
         stars.children[1].children[0].classList.replace("fa-star", "fa-star-o");
-    } else if (clicks > 20) {
-        stars.children[0].children[0].classList.replace("fa-star", "fa-star-o");
     }
 }
 
@@ -233,11 +231,12 @@ function initGame() {
     shuffleCards.map(createHTML);
 
     // Reset counter of moves 
-    let clicks = 0;
+    clicks = 0;
     moves.innerHTML = clicks;
 
     // Reset score in the game and in the modal
     stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
+    stars.children[1].children[0].classList.replace("fa-star-o", "fa-star");
     rating.innerHTML = "";
 }
 
