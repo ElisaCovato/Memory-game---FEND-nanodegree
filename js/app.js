@@ -14,9 +14,12 @@ const timer = document.querySelector(".timer");
 
 // Set the value for clicks counter and timer
 let clicks = 0;
-let mTimer = 0;
-let sTimer = 0;
-let timeGoes = true;
+let timeTotal = 0;
+let timeInt;
+let hour = 0;
+let minute = 0;
+let second = 0
+
 
 
 // Set number of stars accordingly to number of moves
@@ -94,6 +97,10 @@ function createHTML(cardClass) {
 shuffleCards.map(createHTML);
 
 
+
+
+
+
 /*
 Event listener for a card
  *  (roughly) If a card is clicked:
@@ -110,12 +117,17 @@ Event listener for a card
 
 
 deck.addEventListener('click', function(event) {
-    if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".open")) {
+    if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".open") ) {
+        if (timeTotal===0) {
+            startTimer();
+        };
         flip(event.target);
         storeOpen(event.target);
         matchCards(event.target);
     }
-});
+}, true);
+
+
 
 // Flip the cards when it's clicked
 function flip(card) {
@@ -149,7 +161,7 @@ function matchCards(card) {
         clicksCounter();
         // change star rating accorindgly to the numbers of moves
         ratingStars();
-        // if all the cards are matched shows the finishing-game message
+        // if all the cards are matched shows the finishing-game message 
         if (cardDeck.matched === cardDeck.cards.length/2) {
             finishGame();
         }
@@ -196,10 +208,39 @@ function clicksCounter(){
     moves.innerHTML = clicks;
 }
 
-// This function keeps track of the time
-function timeTrack() {
-
+// This function starts the time
+function startTimer() {
+    resetTimer();
+    startTime = Date.now();
+    timeInt = setInterval( function() {
+        timeTotal =Math.floor( (Date.now() - startTime)/1000 );
+        displayTimer(timeTotal);
+    }, 1000);   
 }
+
+// This function reset the timer
+function resetTimer() {
+    stopTimer();
+    timeTotal = 0;
+    displayTimer(timeTotal);
+}
+
+// This function display the timer
+function displayTimer(timeTotal) {
+    hour = Math.floor(timeTotal / 3600);
+    minute = Math.floor((timeTotal - hour * 3600) / 60);
+    second = timeTotal - hour * 3600 - minute * 60;
+    if (hour < 10) hour = '0' + hour;
+    if (minute < 10) minute = '0' + minute;
+    if (second < 10) second = '0' + second;
+    timer.innerHTML = hour + ':' + minute + ':' + second;
+}
+
+// This function stops the time
+function stopTimer() {
+    clearInterval(timeInt);
+} 
+
 
 // This function gives the star rating according to the number of moves
 function ratingStars(){
@@ -226,6 +267,8 @@ function finishGame() {
     close.addEventListener('click', function() {
         modal.style.display = "none";
     });
+
+    stopTimer();
 } 
 
 
@@ -256,6 +299,9 @@ function initGame() {
     stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
     stars.children[1].children[0].classList.replace("fa-star-o", "fa-star");
     rating.innerHTML = "";
+
+    // Reset time
+    resetTimer();
 }
 
 restart.addEventListener('click', function() {
