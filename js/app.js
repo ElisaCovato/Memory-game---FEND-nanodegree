@@ -33,8 +33,6 @@ const stars3 = 16
  * Deck of cards
  */
 
-
-
 // Symbols on the cards
 const cardSymbols = {
     ANCHOR : 'fa fa-anchor',
@@ -62,6 +60,9 @@ const cardDeck = {
     isAnimating : false,
 }
 
+
+
+
 /*
  * Display the cards on the page after shuffling them
  */
@@ -83,8 +84,6 @@ function shuffle(array) {
 
 let shuffleCards = shuffle(cardDeck.cards);
 
-
-
 // Create HTML for the deck of cards (display them)
 function createHTML(cardClass) {
     (deckSymb = document.createElement("i")).className = cardClass;
@@ -102,7 +101,7 @@ shuffleCards.map(createHTML);
 
 
 /*
-Event listener for a card
+ * START the game
  *  (roughly) If a card is clicked:
  *  - display the card's symbol 
  *  - add the card to a *list* of "open" cards 
@@ -111,23 +110,90 @@ Event listener for a card
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol
  *    + increment the move counter and display it on the page 
  *    + if all cards have matched, display a message with the final score 
-*/
-
-
-
+ */
 
 deck.addEventListener('click', function(event) {
     if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".open") ) {
+
+        // timer starts
         if (timeTotal===0) {
             startTimer();
         };
+
+        // flip cards, store the opened ones, check if the cards match
         flip(event.target);
         storeOpen(event.target);
         matchCards(event.target);
+
+        // if all the cards are matched shows the finishing-game message 
+        if (cardDeck.matched === cardDeck.cards.length/2) {
+            finishGame();
+        };
     }
-}, true);
+});
 
 
+
+/*
+ * RESTART the game
+ */
+
+restart.addEventListener('click', function() {
+    restartGame();
+})
+
+
+/*
+ * FINISH game
+ */
+
+/* It shows a popup winning message + score in a modal box when the game finishes*/
+function finishGame() {
+    //function clone score in the popup message
+    getScore();
+
+    modal.style.display = "block";
+    close.addEventListener('click', function() {
+        modal.style.display = "none";
+    });
+
+    stopTimer();
+}
+
+
+/*
+FUNCTIONS
+*/
+
+/* Restart game */
+function restartGame() {
+    // Clear the deck of cards, empty the list of open cards, and reset counter for matched cards
+    deck.innerHTML = "";
+    cardDeck.opened = [];
+    cardDeck.matched = 0;
+
+    // Shuffle the cards and re-create their HTML
+    let shuffleCards = shuffle(cardDeck.cards);
+    shuffleCards.map(createHTML);
+
+    // Reset counter of moves 
+    clicks = 0;
+    moves.innerHTML = clicks;
+
+    // Reset score in the game and in the modal
+    stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
+    stars.children[1].children[0].classList.replace("fa-star-o", "fa-star");
+    rating.innerHTML = "";
+
+    // Reset time
+    resetTimer();
+}
+
+
+ 
+
+
+/*Cards functions*/
 
 // Flip the cards when it's clicked
 function flip(card) {
@@ -139,7 +205,8 @@ function storeOpen(card) {
     cardDeck.opened.push(card);
 }
 
-// This function check if 2 cards match. If they do it locks them opened, otherwise hide them. It then increase the moves counter and change the star rating accoridngly
+// This function check if 2 cards match. If they do it keeps them opened, otherwise hide them. 
+//It then increase the moves counter and change the star rating accordingly
 function matchCards(card) {
     if (cardDeck.opened.length > 1) {
         cardClass = card.children[0].className;
@@ -159,12 +226,8 @@ function matchCards(card) {
         cardDeck.opened = [];
         // increase the click counter
         clicksCounter();
-        // change star rating accorindgly to the numbers of moves
+        // change star rating according to the numbers of moves
         ratingStars();
-        // if all the cards are matched shows the finishing-game message 
-        if (cardDeck.matched === cardDeck.cards.length/2) {
-            finishGame();
-        }
     }
 }
 
@@ -179,12 +242,6 @@ function animateMatch (card) {
     }, 1000);
 }
 
-// If the cards match, it keeps the card open and animate them
-function lockMatch(card1, card2) {
-    animateMatch(card1);
-    animateMatch(card2);
-}
-
 // It animates the cards when they don't match and they it closes them 
 function animateHide(card) {
     cardDeck.isAnimating = true;
@@ -195,6 +252,11 @@ function animateHide(card) {
     }, 1000);
 }
 
+// If the cards match, it keeps the card open and animate them
+function lockMatch(card1, card2) {
+    animateMatch(card1);
+    animateMatch(card2);
+}
 
 // If the cards do NOT match, it hides the cards and remove them from the open list
 function hideCards(card1, card2) {
@@ -202,11 +264,8 @@ function hideCards(card1, card2) {
     animateHide(card2);
 }
 
-// This function increments the move counter
-function clicksCounter(){
-    clicks +=  1;
-    moves.innerHTML = clicks;
-}
+
+/*Timer functions*/
 
 // This function starts the time
 function startTimer() {
@@ -242,6 +301,14 @@ function stopTimer() {
 } 
 
 
+/* Score functions */
+
+// This function increments the move counter
+function clicksCounter(){
+    clicks +=  1;
+    moves.innerHTML = clicks;
+}
+
 // This function gives the star rating according to the number of moves
 function ratingStars(){
     if (clicks > stars3 && clicks <= stars2) {
@@ -258,54 +325,12 @@ function getScore() {
 }
 
 
-// This function show a popup winning message + score in a modal box when the game finishes
-function finishGame() {
-    //function clone score in the popup message
-    getScore();
-
-    modal.style.display = "block";
-    close.addEventListener('click', function() {
-        modal.style.display = "none";
-    });
-
-    stopTimer();
-} 
 
 
 
-/*
-Restart game
-*/
 
-// Set initial game
-// Initial Game
-function initGame() {
-    // Clear the deck of cards, empty the list of open cards, and reset counter for matched cards
 
-    deck.innerHTML = "";
 
-    cardDeck.opened = [];
-    cardDeck.matched = 0;
 
-    // Shuffle the cards and re-create their HTML
-    let shuffleCards = shuffle(cardDeck.cards);
-    shuffleCards.map(createHTML);
-
-    // Reset counter of moves 
-    clicks = 0;
-    moves.innerHTML = clicks;
-
-    // Reset score in the game and in the modal
-    stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
-    stars.children[1].children[0].classList.replace("fa-star-o", "fa-star");
-    rating.innerHTML = "";
-
-    // Reset time
-    resetTimer();
-}
-
-restart.addEventListener('click', function() {
-    initGame();
-})
 
 
