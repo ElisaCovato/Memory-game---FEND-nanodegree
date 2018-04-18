@@ -1,3 +1,7 @@
+/*
+ * GENERAL LAYOUT
+ */
+
 html {
     box-sizing: border-box;
 }
@@ -33,6 +37,7 @@ h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
+
 
 /*
  * Styles for the deck of cards
@@ -135,8 +140,13 @@ h1 {
 .restart {
     float: right;
     cursor: pointer;
+    display: inline-block;
+    text-align: right;
 }
 
+.restart i {
+    color: #7840a5;
+}
 
 
 
