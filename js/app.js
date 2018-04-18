@@ -7,7 +7,6 @@ const moves = document.querySelector(".moves");
 const stars = document.querySelector(".stars");
 const modal = document.querySelector(".modal");
 const close = document.querySelector(".close");
-const rating = document.querySelector(".rating");
 const restart = document.querySelector(".restart");
 const timer = document.querySelector(".timer");
 
@@ -113,7 +112,7 @@ shuffleCards.map(createHTML);
  */
 
 deck.addEventListener('click', function(event) {
-    if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".open") ) {
+    if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".open") && cardDeck.opened.length<=1) {
 
         // timer starts
         if (timeTotal===0) {
@@ -143,22 +142,8 @@ restart.addEventListener('click', function() {
 })
 
 
-/*
- * FINISH game
- */
 
-/* It shows a popup winning message + score in a modal box when the game finishes*/
-function finishGame() {
-    //function clone score in the popup message
-    getScore();
 
-    modal.style.display = "block";
-    close.addEventListener('click', function() {
-        modal.style.display = "none";
-    });
-
-    stopTimer();
-}
 
 
 /*
@@ -180,16 +165,20 @@ function restartGame() {
     clicks = 0;
     moves.innerHTML = clicks;
 
-    // Reset score in the game and in the modal
+    // Reset score in the game 
     stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
     stars.children[1].children[0].classList.replace("fa-star-o", "fa-star");
-    rating.innerHTML = "";
+
 
     // Reset time
     resetTimer();
 }
 
-
+/* FINISH game : It shows a popup winning message + score in a modal box when the game finishes*/
+function finishGame() {
+    stopTimer();
+    winningModal();
+}
  
 
 
@@ -216,14 +205,16 @@ function matchCards(card) {
         // check if the cards match or not
         if (cardClass === cardClassOpen) {
           lockMatch(card, cardOpen);
+          // empty the list of open cards
+          cardDeck.opened = [];
           cardDeck.matched++; 
         } else {
             setTimeout (function() {
                 hideCards(card, cardOpen);
+                cardDeck.opened = [];
             }, 320);
         }
-        // empty the list of open cards
-        cardDeck.opened = [];
+
         // increase the click counter
         clicksCounter();
         // change star rating according to the numbers of moves
@@ -300,6 +291,17 @@ function stopTimer() {
     clearInterval(timeInt);
 } 
 
+// this function gets the time to add to the modal
+function getTimeModal() {
+    let time = timer.cloneNode(true);
+    let showTime = document.createElement("div");
+    let textTime = document.createTextNode("Your time :");
+    showTime.appendChild(textTime);
+    showTime.appendChild(time);
+    showTime.className = "timeModal";
+    return showTime;
+}
+
 
 /* Score functions */
 
@@ -318,13 +320,51 @@ function ratingStars(){
     }
 }
 
-// This function clones the score and adds it to the modal
-function getScore() {
+// This function clones the score to add to the modal
+
+function getScoreModal() {
     let score = stars.cloneNode(true);
-    rating.append(score);
+    let showScore = document.createElement("div");
+    let textScore = document.createTextNode("Your score :");
+    showScore.appendChild(textScore);
+     showScore.appendChild(score);
+    showScore.className = "scoreModal";
+    return showScore;
 }
 
 
+
+/*
+MODAL
+*/
+
+// This function puts together the score and the time in a unique block to put in the modal
+function finishScoreTime() {
+    let finishBlock = document.createElement("div");
+    let showScore = getScoreModal();
+    let showTime = getTimeModal();
+    finishBlock.appendChild(showScore);
+    finishBlock.appendChild(showTime);
+
+    return finishBlock;
+}
+
+// This function show a winning sweet alert
+
+
+function winningModal() {
+    let finishBlock = finishScoreTime();
+    swal({
+        title: "Congratulations! You won!",
+        icon: "success",
+        button: "Play again!",
+        content: finishBlock,
+    }).then(function(isConfirm) {
+        if (isConfirm) {
+            restartGame();
+        }
+    });  
+}
 
 
 
