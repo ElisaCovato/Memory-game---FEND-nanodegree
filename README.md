@@ -43,7 +43,7 @@ The game ends once all cards have been correctly matched.
 ### Card Flipping CSS:
 
 
-- <http://callmenick.com/post/css-transitions-transforms-animations-flipping-card>
+- <https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css>
 
 
 ### Modal / Sweet Alert
