@@ -25,9 +25,9 @@ let startTime;
 
 
 // Set number of stars accordingly to number of moves
-const stars1 = 24;
-const stars2 = 20;
-const stars3 = 16;
+const stars1 = 30;
+const stars2 = 24;
+const stars3 = 18;
 
 
 
