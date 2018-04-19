@@ -338,6 +338,8 @@ function winningModal() {
         title: "Congratulations! You won!",
         icon: "success",
         button: "Play again!",
+        closeOnEsc: false,
+        closeOnClickOutside: false,
         content: finishBlock,
     }).then(function(isConfirm) {
         if (isConfirm) {
@@ -352,6 +354,8 @@ function warningModal(pauseTime) {
         title: "Are you sure?",
         text: "Your progresses will be lost!",
         icon: "warning",
+        closeOnEsc: false,
+        closeOnClickOutside: false,
         buttons: {
             cancel: "Cancel",
             confirm: {
@@ -374,6 +378,11 @@ function warningModal(pauseTime) {
 }
 
 
+/*
+POLYFILL: older browser support
+*/
+
+// For browsers that do not support Element.matches() or Element.matchesSelector(), but carry support for document.querySelectorAll()
 if (!Element.prototype.matches) {
     Element.prototype.matches = 
         Element.prototype.matchesSelector || 
