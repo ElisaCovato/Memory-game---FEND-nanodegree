@@ -302,6 +302,9 @@ function ratingStars() {
     } else if (clicks > stars2 && clicks <= stars1) {
         stars.children[1].children[0].classList.replace("fa-star", "fa-star-o");
     }
+    else if (clicks > stars1) {
+        stars.children[0].children[0].classList.replace("fa-star", "fa-star-o");
+    }
 }
 
 // This function clones the score to add to the modal
