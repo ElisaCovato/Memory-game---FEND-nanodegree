@@ -156,6 +156,16 @@ h1 {
  * Styles for modal panels
  */
 
+.swal-button--confirm {
+    background-color: #02ccba;
+}
+
+.swal-button--cancel, .swal-title, .swal-text {
+    color : #2e4b85;
+}
+
+
+
 /*Style for the score and the time shown in the modal*/
  .timeModal, .scoreModal {
     position: relative;
@@ -177,10 +187,5 @@ h1 {
     margin-right: 5px;
 }
 
-.swal-button--confirm {
-    background-color: #02ccba;
-}
 
-.swal-title {
-    color : #2e4b85;
-}
+

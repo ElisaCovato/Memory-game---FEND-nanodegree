@@ -17,14 +17,17 @@ let timeTotal = 0;
 let timeInt;
 let hour = 0;
 let minute = 0;
-let second = 0
+let second = 0;
+let isPaused = true;
+let startTime;
+
 
 
 
 // Set number of stars accordingly to number of moves
 const stars1 = 24;
 const stars2 = 20;
-const stars3 = 16
+const stars3 = 16;
 
 
 
@@ -114,10 +117,15 @@ shuffleCards.map(createHTML);
 deck.addEventListener('click', function(event) {
     if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".open") && cardDeck.opened.length<=1) {
 
+
         // timer starts
         if (timeTotal===0) {
-            startTimer();
-        };
+            startTime = Date.now();
+            resetTimer()
+            startTimer(startTime);
+        };   
+
+
 
         // flip cards, store the opened ones, check if the cards match
         flip(event.target);
@@ -138,7 +146,9 @@ deck.addEventListener('click', function(event) {
  */
 
 restart.addEventListener('click', function() {
-    restartGame();
+    let pauseTime = Date.now();
+    stopTimer();
+    warningModal(pauseTime);
 })
 
 
@@ -259,13 +269,12 @@ function hideCards(card1, card2) {
 /*Timer functions*/
 
 // This function starts the time
-function startTimer() {
-    resetTimer();
-    startTime = Date.now();
+function startTimer(startTime) {
+    //let startTime = Date.now();
     timeInt = setInterval( function() {
         timeTotal =Math.floor( (Date.now() - startTime)/1000 );
         displayTimer(timeTotal);
-    }, 1000);   
+    }, 1000);     
 }
 
 // This function reset the timer
@@ -290,6 +299,7 @@ function displayTimer(timeTotal) {
 function stopTimer() {
     clearInterval(timeInt);
 } 
+
 
 // this function gets the time to add to the modal
 function getTimeModal() {
@@ -338,7 +348,7 @@ function getScoreModal() {
 MODAL
 */
 
-// This function puts together the score and the time in a unique block to put in the modal
+// This function puts together the score and the time in a unique block to put in the winning modal
 function finishScoreTime() {
     let finishBlock = document.createElement("div");
     let showScore = getScoreModal();
@@ -350,7 +360,6 @@ function finishScoreTime() {
 }
 
 // This function show a winning sweet alert
-
 
 function winningModal() {
     let finishBlock = finishScoreTime();
@@ -366,6 +375,34 @@ function winningModal() {
     });  
 }
 
+
+// This function shows a warning sweet alert when pressing the restart button
+
+function warningModal(pauseTime) {
+    swal({
+        title : "Are you sure?",
+        text: "Your progresses will be lost!",
+        icon: "warning",
+        buttons : {
+            cancel: "Cancel",
+            confirm: {
+                text: "Yes, restart",
+                value: "restart",
+            },
+        }
+    }).then((value) => {
+        switch (value) {
+            case "restart":
+                restartGame();
+                break;
+            default :
+                let delayTime = Date.now()-pauseTime;
+                startTime = startTime+delayTime;
+                startTimer(startTime);
+                break;
+        }
+    });
+}
 
 
 
