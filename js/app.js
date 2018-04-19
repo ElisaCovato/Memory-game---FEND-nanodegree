@@ -10,7 +10,6 @@ const close = document.querySelector(".close");
 const restart = document.querySelector(".restart");
 const timer = document.querySelector(".timer");
 
-
 // Set the value for clicks counter and timer
 let clicks = 0;
 let timeTotal = 0;
@@ -20,9 +19,6 @@ let minute = 0;
 let second = 0;
 let isPaused = true;
 let startTime;
-
-
-
 
 // Set number of stars accordingly to number of moves
 const stars1 = 30;
@@ -37,31 +33,30 @@ const stars3 = 18;
 
 // Symbols on the cards
 const cardSymbols = {
-    ANCHOR : 'fa fa-anchor',
-    BICYCLE : 'fa fa-bicycle',
-    BOLT : 'fa fa-bolt',
-    BOMB : 'fa fa-bomb',
-    CUBE : 'fa fa-cube',
-    DIAMOND : 'fa fa-diamond',
-    LEAF : 'fa fa-leaf',
-    PLANE : 'fa fa-paper-plane-o',    
+    ANCHOR: 'fa fa-anchor',
+    BICYCLE: 'fa fa-bicycle',
+    BOLT: 'fa fa-bolt',
+    BOMB: 'fa fa-bomb',
+    CUBE: 'fa fa-cube',
+    DIAMOND: 'fa fa-diamond',
+    LEAF: 'fa fa-leaf',
+    PLANE: 'fa fa-paper-plane-o',
 }
 
 // Card states
 const cardState = {
-    CLOSED : 'card',
-    OPENED : 'card open show',
-    MATCHED : 'card open match',
+    CLOSED: 'card',
+    OPENED: 'card open show',
+    MATCHED: 'card open match',
 }
 
 // Deck of cards
 const cardDeck = {
-	cards : [cardSymbols.ANCHOR, cardSymbols.ANCHOR, cardSymbols.BICYCLE, cardSymbols.BICYCLE, cardSymbols.BOLT, cardSymbols.BOLT, cardSymbols.BOMB, cardSymbols.BOMB, cardSymbols.CUBE, cardSymbols.CUBE, cardSymbols.DIAMOND, cardSymbols.DIAMOND, cardSymbols.LEAF, cardSymbols.LEAF, cardSymbols.PLANE, cardSymbols.PLANE],
-	opened : [],
-    matched : 0,
-    isAnimating : false,
+    cards: [cardSymbols.ANCHOR, cardSymbols.ANCHOR, cardSymbols.BICYCLE, cardSymbols.BICYCLE, cardSymbols.BOLT, cardSymbols.BOLT, cardSymbols.BOMB, cardSymbols.BOMB, cardSymbols.CUBE, cardSymbols.CUBE, cardSymbols.DIAMOND, cardSymbols.DIAMOND, cardSymbols.LEAF, cardSymbols.LEAF, cardSymbols.PLANE, cardSymbols.PLANE],
+    opened: [],
+    matched: 0,
+    isAnimating: false,
 }
-
 
 
 
@@ -71,8 +66,8 @@ const cardDeck = {
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
+    var currentIndex = array.length,
+        temporaryValue, randomIndex;
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
@@ -80,25 +75,18 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
-
 let shuffleCards = shuffle(cardDeck.cards);
 
 // Create HTML for the deck of cards (display them)
 function createHTML(cardClass) {
     (deckSymb = document.createElement("i")).className = cardClass;
     (deckCard = document.createElement("li")).className = cardState.CLOSED;
-
     deckCard.appendChild(deckSymb)
-    deck.appendChild(deckCard);    
+    deck.appendChild(deckCard);
 }
-
 shuffleCards.map(createHTML);
-
-
-
 
 
 
@@ -115,25 +103,19 @@ shuffleCards.map(createHTML);
  */
 
 deck.addEventListener('click', function(event) {
-    if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".open") && cardDeck.opened.length<=1) {
-
-
+    if (!cardDeck.isAnimating && event.target.matches(".card") && !event.target.matches(".open") && cardDeck.opened.length <= 1) {
         // timer starts
-        if (timeTotal===0) {
+        if (timeTotal === 0) {
             startTime = Date.now();
             resetTimer()
             startTimer(startTime);
-        };   
-
-
-
+        };
         // flip cards, store the opened ones, check if the cards match
         flip(event.target);
         storeOpen(event.target);
         matchCards(event.target);
-
         // if all the cards are matched shows the finishing-game message 
-        if (cardDeck.matched === cardDeck.cards.length/2) {
+        if (cardDeck.matched === cardDeck.cards.length / 2) {
             finishGame();
         };
     }
@@ -144,15 +126,11 @@ deck.addEventListener('click', function(event) {
 /*
  * RESTART the game
  */
-
 restart.addEventListener('click', function() {
     let pauseTime = Date.now();
     stopTimer();
     warningModal(pauseTime);
-})
-
-
-
+});
 
 
 
@@ -160,44 +138,41 @@ restart.addEventListener('click', function() {
 FUNCTIONS
 */
 
+
+
 /* Restart game */
 function restartGame() {
     // Clear the deck of cards, empty the list of open cards, and reset counter for matched cards
     deck.innerHTML = "";
     cardDeck.opened = [];
     cardDeck.matched = 0;
-
     // Shuffle the cards and re-create their HTML
     let shuffleCards = shuffle(cardDeck.cards);
     shuffleCards.map(createHTML);
-
     // Reset counter of moves 
     clicks = 0;
     moves.innerHTML = clicks;
-
     // Reset score in the game 
     stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
     stars.children[1].children[0].classList.replace("fa-star-o", "fa-star");
-
-
     // Reset time
     resetTimer();
 }
+
+
 
 /* FINISH game : It shows a popup winning message + score in a modal box when the game finishes*/
 function finishGame() {
     stopTimer();
     winningModal();
 }
- 
-
 
 /*Cards functions*/
 
 // Flip the cards when it's clicked
 function flip(card) {
     card.className = cardState.OPENED;
-} 
+}
 
 // Store the flipped cards in an array
 function storeOpen(card) {
@@ -209,22 +184,20 @@ function storeOpen(card) {
 function matchCards(card) {
     if (cardDeck.opened.length > 1) {
         cardClass = card.children[0].className;
-        var cardOpen = cardDeck.opened[cardDeck.opened.length-2];
+        var cardOpen = cardDeck.opened[cardDeck.opened.length - 2];
         cardClassOpen = cardOpen.children[0].className;
-
         // check if the cards match or not
         if (cardClass === cardClassOpen) {
-          lockMatch(card, cardOpen);
-          // empty the list of open cards
-          cardDeck.opened = [];
-          cardDeck.matched++; 
+            lockMatch(card, cardOpen);
+            // empty the list of open cards
+            cardDeck.opened = [];
+            cardDeck.matched++;
         } else {
-            setTimeout (function() {
+            setTimeout(function() {
                 hideCards(card, cardOpen);
                 cardDeck.opened = [];
             }, 320);
         }
-
         // increase the click counter
         clicksCounter();
         // change star rating according to the numbers of moves
@@ -233,11 +206,11 @@ function matchCards(card) {
 }
 
 // It animates matching cards 
-function animateMatch (card) {
+function animateMatch(card) {
     cardDeck.isAnimating = true;
     card.className = cardState.MATCHED;
     card.className += " animated infinite rubberBand";
-    setTimeout (function() {
+    setTimeout(function() {
         card.classList.remove("animated", "infinite", "rubberBand");
         cardDeck.isAnimating = false;
     }, 1000);
@@ -247,9 +220,9 @@ function animateMatch (card) {
 function animateHide(card) {
     cardDeck.isAnimating = true;
     card.className += " notmatch animated infinite wobble";
-    setTimeout (function() {
-       card.className = cardState.CLOSED; 
-       cardDeck.isAnimating = false;
+    setTimeout(function() {
+        card.className = cardState.CLOSED;
+        cardDeck.isAnimating = false;
     }, 1000);
 }
 
@@ -266,15 +239,16 @@ function hideCards(card1, card2) {
 }
 
 
+
 /*Timer functions*/
 
 // This function starts the time
 function startTimer(startTime) {
     //let startTime = Date.now();
-    timeInt = setInterval( function() {
-        timeTotal =Math.floor( (Date.now() - startTime)/1000 );
+    timeInt = setInterval(function() {
+        timeTotal = Math.floor((Date.now() - startTime) / 1000);
         displayTimer(timeTotal);
-    }, 1000);     
+    }, 1000);
 }
 
 // This function reset the timer
@@ -298,8 +272,7 @@ function displayTimer(timeTotal) {
 // This function stops the time
 function stopTimer() {
     clearInterval(timeInt);
-} 
-
+}
 
 // this function gets the time to add to the modal
 function getTimeModal() {
@@ -313,16 +286,17 @@ function getTimeModal() {
 }
 
 
+
 /* Score functions */
 
 // This function increments the move counter
-function clicksCounter(){
-    clicks +=  1;
+function clicksCounter() {
+    clicks += 1;
     moves.innerHTML = clicks;
 }
 
 // This function gives the star rating according to the number of moves
-function ratingStars(){
+function ratingStars() {
     if (clicks > stars3 && clicks <= stars2) {
         stars.children[2].children[0].classList.replace("fa-star", "fa-star-o");
     } else if (clicks > stars2 && clicks <= stars1) {
@@ -331,13 +305,12 @@ function ratingStars(){
 }
 
 // This function clones the score to add to the modal
-
 function getScoreModal() {
     let score = stars.cloneNode(true);
     let showScore = document.createElement("div");
     let textScore = document.createTextNode("Your score :");
     showScore.appendChild(textScore);
-     showScore.appendChild(score);
+    showScore.appendChild(score);
     showScore.className = "scoreModal";
     return showScore;
 }
@@ -355,12 +328,10 @@ function finishScoreTime() {
     let showTime = getTimeModal();
     finishBlock.appendChild(showScore);
     finishBlock.appendChild(showTime);
-
     return finishBlock;
 }
 
 // This function show a winning sweet alert
-
 function winningModal() {
     let finishBlock = finishScoreTime();
     swal({
@@ -372,18 +343,16 @@ function winningModal() {
         if (isConfirm) {
             restartGame();
         }
-    });  
+    });
 }
 
-
 // This function shows a warning sweet alert when pressing the restart button
-
 function warningModal(pauseTime) {
     swal({
-        title : "Are you sure?",
+        title: "Are you sure?",
         text: "Your progresses will be lost!",
         icon: "warning",
-        buttons : {
+        buttons: {
             cancel: "Cancel",
             confirm: {
                 text: "Yes, restart",
@@ -395,19 +364,11 @@ function warningModal(pauseTime) {
             case "restart":
                 restartGame();
                 break;
-            default :
-                let delayTime = Date.now()-pauseTime;
-                startTime = startTime+delayTime;
+            default:
+                let delayTime = Date.now() - pauseTime;
+                startTime = startTime + delayTime;
                 startTimer(startTime);
                 break;
         }
     });
 }
-
-
-
-
-
-
-
-

@@ -21,7 +21,8 @@ body {
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    background: #ffffff url('../img/geometry2.png');
+    /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
     color: #2e4b85;
 }
@@ -37,7 +38,6 @@ h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
-
 
 /*
  * Styles for the deck of cards
@@ -94,8 +94,6 @@ h1 {
     background: #EE0E51;
 }
 
-
-
 /*
  * Styles for the Score Panel
  */
@@ -149,9 +147,6 @@ h1 {
     color: #7840a5;
 }
 
-
-
-
 /*
  * Styles for modal panels
  */
@@ -160,32 +155,31 @@ h1 {
     background-color: #02ccba;
 }
 
-.swal-button--cancel, .swal-title, .swal-text {
-    color : #2e4b85;
+.swal-button--cancel,
+.swal-title,
+.swal-text {
+    color: #2e4b85;
 }
 
-
-
 /*Style for the score and the time shown in the modal*/
- .timeModal, .scoreModal {
+
+.timeModal,
+.scoreModal {
     position: relative;
     text-align: center;
 }
 
-.timeModal > .timer {
+.timeModal>.timer {
     display: inline-block;
     margin: 0 0 0 0;
     width: 80px;
     text-align: center;
-    color:  #7840a5;
-    background-color: white;   
+    color: #7840a5;
+    background-color: white;
 }
 
-.scoreModal > .stars {
+.scoreModal>.stars {
     display: inline-block;
     margin-left: 5px;
     margin-right: 5px;
 }
-
-
-
