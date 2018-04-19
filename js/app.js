@@ -155,6 +155,7 @@ function restartGame() {
     // Reset score in the game 
     stars.children[2].children[0].classList.replace("fa-star-o", "fa-star");
     stars.children[1].children[0].classList.replace("fa-star-o", "fa-star");
+    stars.children[0].children[0].classList.replace("fa-star-o", "fa-star");
     // Reset time
     resetTimer();
 }
