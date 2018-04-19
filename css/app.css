@@ -131,7 +131,7 @@ h1 {
 }
 
 .moves {
-    min-width: 2ch;
+    min-width: 2ch; 
     display: inline-block;
     text-align: right;
 }
